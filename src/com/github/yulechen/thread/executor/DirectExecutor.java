@@ -14,5 +14,6 @@ class DirectExecutor implements Executor {
     public static void main(String[] args) {
         Executor executor = new DirectExecutor();
         executor.execute(new MyTask());
+        
     }
 }
