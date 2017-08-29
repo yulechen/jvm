@@ -19,7 +19,7 @@ public class TpsTest1 {
 
     public static int number = 0;
 
-    static Executor pool = Executors.newFixedThreadPool(1);
+    static Executor pool = Executors.newFixedThreadPool(4);
     public static int MAX_COUNT = 10000000;// 10000w
 
 
@@ -30,13 +30,17 @@ public class TpsTest1 {
         // operate();
         // }
         long start = System.currentTimeMillis();
-        while (true) {
-            pool.execute(new Task(start));
-        }
+        pool.execute(new Task(start, true));
+        pool.execute(new Task(start, false));
+        pool.execute(new Task(start, false));
+        pool.execute(new Task(start, false));
     }
 
 
-    public static void operate() {
+    public static synchronized void operate() {
+        for (int i = 0; i < MAX_COUNT; i++) {
+
+        }
         number = number + 1;
     }
 
@@ -46,19 +50,31 @@ public class TpsTest1 {
     // (1qw)thread 8 -->8737(1qw)
     static class Task implements Runnable {
         long start = 0l;
+        boolean sleep;
 
 
-        public Task(long start) {
+        public Task(long start, boolean sleep) {
             this.start = start;
+            this.sleep = sleep;
         }
 
 
         // 1.5s
         @Override
         public void run() {
-            operate();
-            if (number == MAX_COUNT) {
-                System.out.println("time" + (System.currentTimeMillis() - start));
+            while (true) {
+                if (sleep) {
+                    try {
+                        Thread.sleep(10);
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                operate();
+                if (number == MAX_COUNT) {
+                    System.out.println("time" + (System.currentTimeMillis() - start) + ":" + number);
+                }
             }
         }
     }
