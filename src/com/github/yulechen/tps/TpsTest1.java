@@ -32,9 +32,9 @@ public class TpsTest1 {
         // }
         long start = System.currentTimeMillis();
         pool.execute(new Task(start, true));
-        pool.execute(new Task(start, false));
-        pool.execute(new Task(start, false));
-        pool.execute(new Task(start, false));
+        pool.execute(new Task(start, true));
+        pool.execute(new Task(start, true));
+        pool.execute(new Task(start, true));
     }
 
 
@@ -47,6 +47,7 @@ public class TpsTest1 {
             a += i;
         }
         System.out.println(a);
+        // if ("pool-1-thread-1".equals(Thread.currentThread().getName()))
         System.out.println(Thread.currentThread().getName() + ": " + (System.currentTimeMillis() - start));
         number = number + 1;
     }
