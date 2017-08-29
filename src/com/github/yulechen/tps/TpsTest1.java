@@ -24,6 +24,7 @@ public class TpsTest1 {
 
 
     public static void main(String[] args) {
+
         // long start = System.nanoTime();// 纳秒
         //
         // for (int i = 0; i < 100000; i++) {
@@ -38,9 +39,15 @@ public class TpsTest1 {
 
 
     public static synchronized void operate() {
-        for (int i = 0; i < MAX_COUNT; i++) {
-
+        long start = System.currentTimeMillis();
+        // if ("pool-1-thread-1".equals(Thread.currentThread().getName()))
+        // System.out.println(Thread.currentThread().getName());
+        int a = 0;
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+            a += i;
         }
+        System.out.println(a);
+        System.out.println(Thread.currentThread().getName() + ": " + (System.currentTimeMillis() - start));
         number = number + 1;
     }
 
@@ -65,7 +72,7 @@ public class TpsTest1 {
             while (true) {
                 if (sleep) {
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(1);
                     }
                     catch (InterruptedException e) {
                         e.printStackTrace();
